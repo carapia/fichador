@@ -5,20 +5,78 @@
     <title>Fichador!</title>
   </head>
   <body align = "center">
-    <!--Menu principal-->
-    <div id="main">
+    <!--cabeçalho-->
+    <div id="header">
       <h1>Fichador!</h1>
+      <p id="infos"> </p>
+    </div>
+    <!--menu principal-->
+    <div id="main">
       <!--Botões que levam a outra página.-->
-      <button type="button">
-        <a href="novo.html">Fichar novo documento.</a>
+      <button type="button" id="bot_novo">
+          Fichar novo documento.
       </button>
-      <button type="button">
-        <a href="">Abrir um fichamento.</a>
-      </button>
+      <button type="button" id="bot_abrir">
+        Abrir um fichamento.
+      </button><br>
+    </div>
+    <!--menu para novo fichamento-->
+    <div id="novo" style="display:none">
+      <h2>Fichar novo livro</h2>
+      <form id="novo-livro">
+        Título: <input type="text" name="titulo" id="titulo"><br>
+        Autor: <input type="text" name="autor" id="autor"><br><br>
+        <input type="button" id="criar" value="Criar">
+        <button type="button" id="voltar">voltar</button>
+      </form>
+    </div>
+    <!--página após criar novo fichamento-->
+    <div id="criado" style="display:none">
+      <p id="info"></p>
+      <button type="button" id="bot_novo"> Fichar novo documento</button>
+      <button type="button" id="voltar">voltar</button>
     </div>
     <!--Rodapé da página-->
+    <script>
+    //requerimentos
+    const electron = require('electron')
+    const fs = require('fs')
+
+    //Navegação pelas opções.
+    const abrirNovo = document.getElementById('bot_novo')
+    const abrirFich = document.getElementById('bot_abrir')
+    const voltarInicio = document.getElementById('voltar')
+
+    abrirNovo.addEventListener('click', function (event) {
+      document.getElementById('novo').style = "display:inline"
+      document.getElementById('main').style = "display:none"
+      document.getElementById('criado').style = 'display:none'
+    })
+
+    abrirFich.addEventListener('click', function (event) {
+      document.getElementById('visor').innerHTML = "Em construção"
+    })
+
+    voltarInicio.addEventListener('click', function (event) {
+      document.getElementById('main').style = "display:inline"
+      document.getElementById('novo').style = "display:none"
+    })
+    //criando no fichamento
+    const criarFich = document.getElementById('criar')
+
+    criarFich.addEventListener('click', function (event) {
+      var titulo = document.getElementById('titulo').value
+      var autor = document.getElementById('autor').value
+      document.getElementById('info').innerHTML = "O livro é " + titulo + " de " + autor + "."
+      var arq = "./lib/" + titulo.toLowerCase() + ".html"
+      var cont = "<div id=\"titulo\">" + titulo + "</div>\n<div id=\"autor\">" + autor + "</div>"
+      fs.writeFile(arq, cont)
+      document.getElementById('criado').style = 'display:inline'
+      document.getElementById('novo').style = 'display:none'
+    })
+    </script>
     <div id="footer">
       <p>Essa é uma criação de Gustavo Carapiá. Contato: gustavogomespc@yahoo.com.br</p>
     </div>
   </body>
-  </html>
+</html>

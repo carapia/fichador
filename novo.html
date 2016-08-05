@@ -1,26 +1,54 @@
-<!DOCTYPE html>
-<html>
-  <head>
-    <meta charset="UTF-8">
-    <title>Fichador!</title>
-  </head>
-  <body>
-    <!--Menu principal-->
-    <div id="main">
-      <h1>Fichador!</h1>
-      <!--Formulário para a criação de novo fichamento-->
-      <h2>Fichar novo livro</h2>
-      <form>
-        Nome do livro: <input type="text" name="titulo"><br><br>
-        Autor: <input type="text" name="autor"><br><br>
-        Ano da edição: <input type="text" name="edicao"><br><br>
-        Observações: <input type="text" name="obs"><br><br>
-        <input type="submit" value="Criar">
-      </form>
-    </div>
-    <!--Rodapé da página-->
-    <div id="footer">
-      <p>Essa é uma criação de Gustavo Carapiá. Contato: gustavogomespc@yahoo.com.br</p>
-    </div>
-  </body>
-  </html>
+
+<h1>Fichador!</h1>
+<!--Formulário para a criação de novo fichamento-->
+<div id='novo'>
+<h2>Fichar novo livro</h2>
+  <form name="novo-livro" method="get">
+    Nome do livro: <input type="text" name="titulo"><br><br>
+    Autor: <input type="text" name="autor"><br><br>
+    Ano da edição: <input type="text" name="edicao"><br><br>
+    Observações: <input type="text" name="obs"><br><br>
+    <input type="button" id="create-new-file" value="Criar">
+  </form>
+</div>
+const criarFich = document.getElementById('create-new-file')
+
+criarFich.addEventListener('click', function (event) {
+  var livros = new Object();
+  livros.titulo = document.getElementById('titulo')
+  livros.autor = document.getElementById('autor')
+  document.getElementById('criado').innerHTML = "Você adicionou " + livros.titulo " de " + livros.autor +"."
+})
+
+
+
+function create() {
+  var titulo = document.getElementById('titulo').value
+  var autor = document.getElementById('autor').value
+  document.getElementById('criado').innerHTML = "O livro é " + titulo + " de " + autor + "."
+  })
+}
+
+
+function create() {
+  var titulo = document.getElementById('titulo').value
+  var autor = document.getElementById('autor').value
+  document.getElementById('criado').innerHTML = "O livro é " + titulo + " de " + autor + "."
+  var arq = "./lib/" + titulo.toLowerCase() + ".txt"
+  fs.access(arq, fs.constants.F_OK, (err) {
+    if (err) {
+      throw err
+    }
+    var existe = "sim"
+  })
+  if (existe === "sim") {
+    document.getElementById('criado').innerHTML = 'esse arquivo já existe';
+  } else {
+    fs.writeFile(arq, "arquivo criado!", (err) {
+      if(err) {
+        throw err
+      }
+      document.getElementById('criado').innerHTML = 'arquivo criado!'
+    })
+  }
+}
