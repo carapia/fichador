@@ -48,3 +48,16 @@ app.on('activate', function () {
 
 // In this file you can include the rest of your app's specific main process
 // code. You can also put them in separate files and require them here.
+const ipc = require('electron').ipcMain
+const fs = require('fs')
+
+ipcMain.on('nova-ficha', function (event, arg1, arg2) {
+  var arq = "./lib/" + arg1.toLowerCase() + ".html"
+  var cont = "<div id=\"titulo\">" + arg1 + "</div>\n<div id=\"autor\">" + arg2 + "</div>"
+  fs.writeFile(arq, cont, function (error) {
+    if (error) {
+      throw error
+    }
+    event.sender.send('ficha-criada')
+  })
+})

@@ -37,10 +37,14 @@
       <button type="button" id="voltar">voltar</button>
     </div>
     <!--Rodapé da página-->
+    <div id="footer">
+      <p>Essa é uma criação de Gustavo Carapiá. Contato: gustavogomespc@yahoo.com.br</p>
+    </div>    
     <script>
     //requerimentos
     const electron = require('electron')
     const fs = require('fs')
+    const ipc = require('electron').ipcRenderer
 
     //Navegação pelas opções.
     const abrirNovo = document.getElementById('bot_novo')
@@ -67,16 +71,14 @@
     criarFich.addEventListener('click', function (event) {
       var titulo = document.getElementById('titulo').value
       var autor = document.getElementById('autor').value
+      ipcRenderer.send('nova-ficha', titulo, autor)
+    })
+
+    ipcRenderer.on('ficha-criada', function (event) {
       document.getElementById('info').innerHTML = "O livro é " + titulo + " de " + autor + "."
-      var arq = "./lib/" + titulo.toLowerCase() + ".html"
-      var cont = "<div id=\"titulo\">" + titulo + "</div>\n<div id=\"autor\">" + autor + "</div>"
-      fs.writeFile(arq, cont)
       document.getElementById('criado').style = 'display:inline'
       document.getElementById('novo').style = 'display:none'
     })
     </script>
-    <div id="footer">
-      <p>Essa é uma criação de Gustavo Carapiá. Contato: gustavogomespc@yahoo.com.br</p>
-    </div>
   </body>
 </html>
